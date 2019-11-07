@@ -7,11 +7,43 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(rvest)
+library(tidyverse)
 ```
 
 
 ## Problem 1 
+```{r}
+set.seed(10)
+
+iris_with_missing = iris %>% 
+  map_df(~replace(.x, sample(1:150, 20), NA)) %>%
+  mutate(Species = as.character(Species))
+```
+* For numeric variables,replace "NA" with the mean of non-missing values. For character variables, replace "NA" with "virginica".
+```{r} 
+insert_new = function(x) {
+  if(is.numeric(x) == TRUE) {
+    x = x %>% 
+      replace_na(mean(x, na.rm = TRUE))
+  }
+  
+if(is.character(x) == TRUE){
+  x = x %>% 
+    replace_na("virginica")
+ }
+
+return(x)
+
+}
+
+iris_with_missing = map_df(iris_with_missing,insert_new) 
+
+iris_with_missing
+```
+
 
 ## Problem 2 
 
 ## Problem 3 
+```{r}
