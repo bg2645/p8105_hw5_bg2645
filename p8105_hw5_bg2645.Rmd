@@ -1,0 +1,17 @@
+---
+title: "p8105_hw5_bg2645"
+author: "Bing Bing Guo"
+date: "11/6/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Problem 1 
+
+## Problem 2 
+
+## Problem 3 
