@@ -56,6 +56,7 @@ longstudy_files = list.files(path = "./data",full.names = TRUE) %>%
                      "experimental")) %>% 
   gather(key = week, value = observation, week_1:week_8) %>% 
   mutate(week = str_replace(week, "week_", ""))
+longstudy_files
 ```
 * Make a spaghetti plot showing observations on each subject over time
 ```{r}
@@ -109,7 +110,8 @@ sim_results
   new_sim_results = 
   tibble(new_beta1 = c(1,2,3,4,5,6)) %>% 
   mutate(
-    output_lists = map(.x = new_beta1, ~rerun(10000, sim_regression(beta1 = .x))),
+    output_lists = map(.x = new_beta1, 
+                       ~rerun(10000, sim_regression(beta1 = .x))),
     estimate_dfs = map(output_lists, bind_rows)) %>% 
   select(-output_lists) %>% 
   unnest(estimate_dfs)
@@ -132,7 +134,8 @@ ggplot(aes(x = new_beta1, y = power)) +
     y = "Power of the Test"
    )
 ```
-* Based on the plot above, it can be seen that as the true value of beta2 increases, the power of the test also increases. Thus, there is a linear relationship between the true value of beta2 and the power of the test.
+
+* Based on the plot above, it can be seen that as the true value of beta2 increases, the power of the test also increases. Thus,showing that when effect size increases the power of the test increases. 
 
 
 
@@ -149,7 +152,8 @@ summarize(average_2 = mean(beta1_hat))
 
 ggplot(true_val, aes(x = new_beta1, y = average_1)) +
 geom_line(aes(color = "Test 1"))  +
-  geom_line(data = null_reject, aes(x= new_beta1, y = average_2, color = "Test 2 (H0 rejected)")) +
+  geom_line(data = null_reject, aes(x= new_beta1, y = average_2, 
+                                    color = "Test 2 (H0 rejected)")) +
   labs(
     color="Legend",
     title = "Association between Beta1_hat and the true value of Beta1",
@@ -158,7 +162,6 @@ geom_line(aes(color = "Test 1"))  +
    )
 ```
 
-
-* The sample average of beta1_hat across tests for which the null is rejected is not equal to the true value of beta1. There is a larger difference when the true value of beta 1 is small, as the true value of beta 1 increases the difference between the two tests becomes smaller. 
+* Based on the two overlayed graphs in the figure above, it can be see that the sample average of beta1_hat across tests for which the null is rejected is not equal to the true value of beta1. This is because there is a large difference when the true value of beta 1 is small, as the true value of beta1 increases the difference between the two tests becomes smaller. 
 
 
